@@ -158,21 +158,12 @@ class MediaSpyCard extends HTMLElement {
       .player {
         display: flex;
         gap: 16px;
-        padding: 16px;
-        background: linear-gradient(145deg, var(--secondary-background-color, rgba(0,0,0,0.03)), var(--primary-background-color, rgba(0,0,0,0.08)));
-        border-radius: var(--ha-card-border-radius, 12px);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-      }
-      .player:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        padding: 16px 0;
       }
       .player-image {
         width: 80px;
         height: 80px;
         min-width: 80px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, var(--primary-color, #03a9f4), var(--accent-color, #00bcd4));
         display: flex;
         align-items: center;
         justify-content: center;
@@ -183,7 +174,7 @@ class MediaSpyCard extends HTMLElement {
       .player-image img {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
       }
       .player-content {
         flex: 1;
