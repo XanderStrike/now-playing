@@ -18,6 +18,7 @@ class MediaSpyCard extends HTMLElement {
 
   setConfig(config) {
     this._config = config;
+    this._exclude = config.exclude || [];
   }
 
   getCardSize() {
@@ -29,7 +30,8 @@ class MediaSpyCard extends HTMLElement {
     if (!this._hass) return [];
     return Object.values(this._hass.states)
       .filter(state => state.entity_id.startsWith('media_player.'))
-      .filter(state => state.state === 'playing' && state.attributes.media_content_type);
+      .filter(state => state.attributes.media_content_type)
+      .filter(state => !this._exclude.includes(state.entity_id));
   }
 
   formatState(state) {
@@ -134,7 +136,7 @@ class MediaSpyCard extends HTMLElement {
         display: block;
       }
       .card {
-        padding: 16px;
+        padding: 8px;
         background: var(--ha-card-background, var(--card-background-color, #fff));
         border-radius: var(--ha-card-border-radius, 12px);
         box-shadow: var(--ha-card-box-shadow, none);
@@ -157,8 +159,9 @@ class MediaSpyCard extends HTMLElement {
       }
       .player {
         display: flex;
-        gap: 16px;
-        padding: 16px 0;
+        gap: 12px;
+        padding: 8px 0;
+        cursor: pointer;
       }
       .player-image {
         width: 80px;
@@ -288,6 +291,11 @@ class MediaSpyCard extends HTMLElement {
 
         const playerEl = document.createElement('div');
         playerEl.className = 'player';
+        playerEl.addEventListener('click', () => {
+          const event = new Event('hass-more-info', { bubbles: true, composed: true });
+          event.detail = { entityId: player.entity_id };
+          this.dispatchEvent(event);
+        });
 
         let imageContent = icon;
         if (imageUrl) {
