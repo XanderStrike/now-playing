@@ -21,6 +21,13 @@ class MediaSpyCard extends HTMLElement {
     this._exclude = config.exclude || [];
   }
 
+  disconnectedCallback() {
+    if (this._progressInterval) {
+      clearInterval(this._progressInterval);
+      this._progressInterval = null;
+    }
+  }
+
   getCardSize() {
     const count = this.getMediaPlayers().length;
     return Math.max(4, count * 3.5);
@@ -140,6 +147,12 @@ class MediaSpyCard extends HTMLElement {
   render() {
     const players = this.getMediaPlayers();
 
+    if (this._progressInterval) {
+      clearInterval(this._progressInterval);
+      this._progressInterval = null;
+    }
+    this._progressElements = [];
+
     const style = document.createElement('style');
     style.textContent = `
       :host {
@@ -255,7 +268,6 @@ class MediaSpyCard extends HTMLElement {
         height: 100%;
         background: var(--primary-color, #03a9f4);
         border-radius: 2px;
-        transition: width 0.3s ease;
       }
       .progress-text {
         font-size: 0.7rem;
@@ -324,13 +336,19 @@ class MediaSpyCard extends HTMLElement {
         let progressHtml = '';
         if (progress) {
           const stateIcon = this.getStateIcon(player.state);
+          const progressId = `progress-${player.entity_id.replace('.', '-')}`;
+          this._progressElements.push({
+            id: progressId,
+            player: player,
+            progress: progress
+          });
           progressHtml = `
             <div class="progress-container">
               <ha-icon icon="${stateIcon}" class="progress-icon"></ha-icon>
               <div class="progress-bar">
-                <div class="progress-fill" style="width: ${progress.percent}%"></div>
+                <div class="progress-fill" id="${progressId}-bar" style="width: ${progress.percent}%"></div>
               </div>
-              <div class="progress-text">${this.formatTime(progress.position)} / ${this.formatTime(progress.duration)}</div>
+              <div class="progress-text" id="${progressId}-text">${this.formatTime(progress.position)} / ${this.formatTime(progress.duration)}</div>
             </div>
           `;
         }
@@ -359,6 +377,28 @@ class MediaSpyCard extends HTMLElement {
     this.innerHTML = '';
     this.appendChild(style);
     this.appendChild(card);
+
+    if (this._progressElements.length > 0) {
+      this._progressInterval = setInterval(() => {
+        this._progressElements.forEach(el => {
+          if (el.player.state !== 'playing') return;
+
+          const bar = this.querySelector(`#${el.id}-bar`);
+          const text = this.querySelector(`#${el.id}-text`);
+          if (!bar || !text) return;
+
+          const now = new Date().getTime();
+          const updatedAt = new Date(el.player.attributes.media_position_updated_at).getTime();
+          const elapsed = (now - updatedAt) / 1000;
+          let currentPosition = el.progress.position + elapsed;
+          currentPosition = Math.min(currentPosition, el.progress.duration);
+
+          const percent = (currentPosition / el.progress.duration) * 100;
+          bar.style.width = `${percent}%`;
+          text.textContent = `${this.formatTime(currentPosition)} / ${this.formatTime(el.progress.duration)}`;
+        });
+      }, 1000);
+    }
   }
 }
 
