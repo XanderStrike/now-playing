@@ -1,7 +1,19 @@
 class MediaSpyCard extends HTMLElement {
   set hass(hass) {
     this._hass = hass;
-    this.render();
+    const players = this.getMediaPlayers();
+    const playerKey = JSON.stringify(players.map(p => ({
+      id: p.entity_id,
+      title: p.attributes.media_title,
+      picture: p.attributes.entity_picture,
+      image_url: p.attributes.media_image_url,
+      image_hash: p.attributes.media_image_hash
+    })));
+
+    if (this._lastPlayerKey !== playerKey) {
+      this._lastPlayerKey = playerKey;
+      this.render();
+    }
   }
 
   setConfig(config) {
@@ -98,30 +110,18 @@ class MediaSpyCard extends HTMLElement {
     const imageHash = state.attributes.media_image_hash;
     const entityPicture = state.attributes.entity_picture;
 
-    console.log('MediaSpyCard - Image attrs:', {
-      entity_id: state.entity_id,
-      media_image_url: imageUrl,
-      media_image_hash: imageHash,
-      entity_picture: entityPicture
-    });
-
     if (imageUrl && imageHash && this._hass) {
-      const url = this._hass.hassUrl(`/api/media_player_proxy/${state.entity_id}/${imageHash}`);
-      console.log('MediaSpyCard - Using proxy URL:', url);
-      return url;
+      return this._hass.hassUrl(`/api/media_player_proxy/${state.entity_id}/${imageHash}`);
     }
 
     if (entityPicture) {
-      console.log('MediaSpyCard - Using entity_picture:', entityPicture);
       return this._hass ? this._hass.hassUrl(entityPicture) : entityPicture;
     }
 
     if (imageUrl) {
-      console.log('MediaSpyCard - Using direct image URL:', imageUrl);
       return imageUrl;
     }
 
-    console.log('MediaSpyCard - No image URL found');
     return null;
   }
 
