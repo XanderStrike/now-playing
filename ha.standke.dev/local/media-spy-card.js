@@ -107,6 +107,16 @@ class MediaSpyCard extends HTMLElement {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   }
 
+  getStateIcon(state) {
+    const s = state || 'unknown';
+    if (s === 'playing') return 'mdi:play';
+    if (s === 'paused') return 'mdi:pause';
+    if (s === 'idle') return 'mdi:sleep';
+    if (s === 'standby') return 'mdi:sleep';
+    if (s === 'off') return 'mdi:stop';
+    return 'mdi:stop-circle';
+  }
+
   getMediaImageUrl(state) {
     const imageUrl = state.attributes.media_image_url;
     const imageHash = state.attributes.media_image_hash;
@@ -230,6 +240,10 @@ class MediaSpyCard extends HTMLElement {
         align-items: center;
         gap: 8px;
       }
+      .progress-icon {
+        --mdc-icon-size: 16px;
+        color: var(--secondary-text-color, #888);
+      }
       .progress-bar {
         flex: 1;
         height: 4px;
@@ -309,8 +323,10 @@ class MediaSpyCard extends HTMLElement {
 
         let progressHtml = '';
         if (progress) {
+          const stateIcon = this.getStateIcon(player.state);
           progressHtml = `
             <div class="progress-container">
+              <ha-icon icon="${stateIcon}" class="progress-icon"></ha-icon>
               <div class="progress-bar">
                 <div class="progress-fill" style="width: ${progress.percent}%"></div>
               </div>
