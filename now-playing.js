@@ -1,4 +1,4 @@
-class MediaSpyCard extends HTMLElement {
+class NowPlaying extends HTMLElement {
   set hass(hass) {
     this._hass = hass;
     const players = this.getMediaPlayers();
@@ -402,4 +402,4 @@ class MediaSpyCard extends HTMLElement {
   }
 }
 
-customElements.define('media-spy-card', MediaSpyCard);
+customElements.define('now-playing', NowPlaying);
