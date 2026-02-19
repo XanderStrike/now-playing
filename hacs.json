@@ -1,0 +1,7 @@
+{
+  "name": "Now Playing Card",
+  "render_readme": true,
+  "domains": ["media_player"],
+  "iot_class": "local_poll",
+  "homeassistant": "2024.1.0"
+}
