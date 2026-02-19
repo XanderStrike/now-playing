@@ -403,3 +403,27 @@ class NowPlaying extends HTMLElement {
 }
 
 customElements.define('now-playing', NowPlaying);
+
+// Register card for the card picker
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: 'now-playing',
+  name: 'Now Playing',
+  description: 'Displays all active media players and their current playing content',
+  preview: true,
+});
+
+// Configuration schema for UI editor
+const getSchema = () => [
+  {
+    type: 'string',
+    name: 'exclude',
+    label: 'Exclude entities',
+    helper: 'List of media_player entities to exclude',
+    selector: { entity: { multiple: true, filter: { domain: 'media_player' } } },
+  },
+];
+
+window.customElementHelpers = window.customElementHelpers || {};
+window.customElementHelpers.types = window.customElementHelpers.types || {};
+window.customElementHelpers.types['now-playing'] = { schema: getSchema };
