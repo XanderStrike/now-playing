@@ -203,6 +203,12 @@ class NowPlaying extends HTMLElement {
           min-width: 80px;
           text-align: right;
         }
+        .transcoding-info {
+          font-size: 0.65rem;
+          color: var(--secondary-text-color, #888);
+          margin-top: 4px;
+          opacity: 0.7;
+        }
         .no-players {
           color: var(--secondary-text-color, #666);
           padding: 32px 16px;
@@ -253,6 +259,13 @@ class NowPlaying extends HTMLElement {
                         <div class="progress-fill" id="${progressId}-bar" style="width: ${progress.percent}%"></div>
                       </div>
                       <div class="progress-text" id="${progressId}-text">${this.formatTime(progress.position)} / ${this.formatTime(progress.duration)}</div>
+                    </div>
+                  ` : ''}
+                  ${attrs.transcoding_active ? `
+                    <div class="transcoding-info">
+                      ${attrs.transcoding_is_video_direct ? 'Direct Video' : `Transcoding ${attrs.transcoding_framerate}fps`}
+                      ${attrs.transcoding_is_audio_direct ? '• Direct Audio' : '• Transcoding Audio'}
+                      ${attrs.transcoding_completion_percentage ? `• ${attrs.transcoding_completion_percentage.toFixed(1)}%` : ''}
                     </div>
                   ` : ''}
                 </div>
