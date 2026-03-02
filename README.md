@@ -7,7 +7,7 @@ Useful if you wish to monitor the Jellyfin or Plex integrations which create a s
 <img width="397" height="639" alt="Screenshot 2026-03-01 at 8 21 45 PM" src="https://github.com/user-attachments/assets/61822c76-3baa-4379-9a5c-5e4569833550" />
 
 > [!IMPORTANT]
-> This card works on its own with the Core Plex/Jellyfin components, however my custom override [Plex](https://github.com/XanderStrike/plex-hass-custom) and [Jellyfin](https://github.com/XanderStrike/jf-custom) integrations add additional data like transcoding info. 
+> This card works on its own with the Core Plex/Jellyfin components, however my custom override [Plex](https://github.com/XanderStrike/plex-hass-custom) and [Jellyfin](https://github.com/XanderStrike/jf-custom) integrations add additional data like transcoding info. I make no guarantees that those are actively maintained or will be kept up to date though.
 
 ## Installation
 
