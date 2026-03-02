@@ -4,8 +4,10 @@ A Home Assistant Lovelace card that displays all active media players with their
 
 Useful if you wish to monitor the Jellyfin or Plex integrations which create a slew of media player entities to represent your users.
 
-<img width="398" height="467" alt="image" src="https://github.com/user-attachments/assets/9380cd39-ca9f-463c-b4c7-ef549741ee3f" />
+<img width="397" height="639" alt="Screenshot 2026-03-01 at 8 21 45 PM" src="https://github.com/user-attachments/assets/61822c76-3baa-4379-9a5c-5e4569833550" />
 
+> [!IMPORTANT]
+> This card works on its own with the Core Plex/Jellyfin components, however my custom override [Plex](https://github.com/XanderStrike/plex-hass-custom) and [Jellyfin](https://github.com/XanderStrike/jf-custom) integrations add additional data like transcoding info. 
 
 ## Installation
 
