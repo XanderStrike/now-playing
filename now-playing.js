@@ -140,7 +140,7 @@ class NowPlaying extends HTMLElement {
           margin-bottom: 16px;
         }
         .player-list { display: flex; flex-direction: column; }
-        .player { display: flex; gap: 12px; padding: 12px 0; cursor: pointer; position: relative; }
+        .player { display: flex; gap: 12px; padding: 12px 0; cursor: pointer; position: relative; align-items: stretch; }
         .player:not(:last-child)::after {
           content: '';
           position: absolute;
@@ -162,7 +162,7 @@ class NowPlaying extends HTMLElement {
           flex-shrink: 0;
         }
         .player-image img { width: 100%; height: 100%; object-fit: cover; }
-        .player-content { flex: 1; min-width: 0; }
+        .player-content { flex: 1; min-width: 0; display: flex; flex-direction: column; }
         .player-source {
           font-size: 0.7rem;
           color: var(--secondary-text-color, #888);
@@ -203,7 +203,8 @@ class NowPlaying extends HTMLElement {
           margin-bottom: 6px;
         }
         .player-meta span { margin-right: 8px; }
-        .progress-container { display: flex; align-items: center; gap: 8px; }
+        .progress-container { display: flex; align-items: center; gap: 8px; margin-top: auto; }
+        .transcoding-info + .progress-container { margin-top: 0; }
         .progress-icon { --mdc-icon-size: 16px; color: var(--secondary-text-color, #888); }
         .progress-bar {
           flex: 1; height: 4px;
@@ -221,6 +222,7 @@ class NowPlaying extends HTMLElement {
         .transcoding-info {
           font-size: 0.65rem;
           color: var(--secondary-text-color, #888);
+          margin-top: auto;
           margin-bottom: 4px;
           text-align: right;
           opacity: 0.7;
