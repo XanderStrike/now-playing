@@ -206,7 +206,8 @@ class NowPlaying extends HTMLElement {
         .transcoding-info {
           font-size: 0.65rem;
           color: var(--secondary-text-color, #888);
-          margin-top: 4px;
+          margin-bottom: 4px;
+          text-align: right;
           opacity: 0.7;
         }
         .no-players {
@@ -252,6 +253,13 @@ class NowPlaying extends HTMLElement {
                   <div class="player-title">${title}</div>
                   ${subtitle ? `<div class="player-subtitle">${subtitle}</div>` : ''}
                   ${meta.length ? `<div class="player-meta">${meta.map(m => `<span>${m}</span>`).join('')}</div>` : ''}
+                  ${attrs.transcoding_active ? `
+                    <div class="transcoding-info">
+                      ${attrs.transcoding_is_video_direct
+                        ? (attrs.transcoding_is_audio_direct ? 'Transcoding' : 'Transcoding audio')
+                        : (attrs.transcoding_is_audio_direct ? 'Transcoding video' : 'Transcoding audio and video')}
+                    </div>
+                  ` : ''}
                   ${progress ? `
                     <div class="progress-container">
                       <ha-icon icon="${this.getStateIcon(player.state)}" class="progress-icon"></ha-icon>
@@ -259,13 +267,6 @@ class NowPlaying extends HTMLElement {
                         <div class="progress-fill" id="${progressId}-bar" style="width: ${progress.percent}%"></div>
                       </div>
                       <div class="progress-text" id="${progressId}-text">${this.formatTime(progress.position)} / ${this.formatTime(progress.duration)}</div>
-                    </div>
-                  ` : ''}
-                  ${attrs.transcoding_active ? `
-                    <div class="transcoding-info">
-                      ${attrs.transcoding_is_video_direct ? 'Direct Video' : `Transcoding ${attrs.transcoding_framerate}fps`}
-                      ${attrs.transcoding_is_audio_direct ? '• Direct Audio' : '• Transcoding Audio'}
-                      ${attrs.transcoding_completion_percentage ? `• ${attrs.transcoding_completion_percentage.toFixed(1)}%` : ''}
                     </div>
                   ` : ''}
                 </div>
