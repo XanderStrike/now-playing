@@ -51,7 +51,7 @@ class NowPlaying extends HTMLElement {
   }
 
   getCardSize() {
-    return Math.max(4, this.getMediaPlayers().length * 3.5);
+    return Math.max(4, this.getMediaPlayers().length * 5);
   }
 
   getMediaPlayers() {
@@ -139,14 +139,29 @@ class NowPlaying extends HTMLElement {
           font-weight: bold;
           margin-bottom: 16px;
         }
-        .player-list { display: flex; flex-direction: column; gap: 16px; }
-        .player { display: flex; gap: 12px; padding: 8px 0; cursor: pointer; }
-        .player-image {
-          width: 80px; height: 80px; min-width: 80px;
-          display: flex; align-items: center; justify-content: center;
-          font-size: 2.5rem; overflow: hidden; flex-shrink: 0;
+        .player-list { display: flex; flex-direction: column; }
+        .player { display: flex; gap: 12px; padding: 12px 0; cursor: pointer; position: relative; }
+        .player:not(:last-child)::after {
+          content: '';
+          position: absolute;
+          left: 12px;
+          right: 12px;
+          bottom: 0;
+          height: 0.5px;
+          background: var(--divider-color, rgba(127, 127, 127, 0.32));
         }
-        .player-image img { width: 100%; height: 100%; object-fit: contain; }
+        .player-image {
+          width: clamp(48px, 12vw, 70px);
+          min-width: clamp(48px, 12vw, 70px);
+          aspect-ratio: 2 / 3;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2.5rem;
+          overflow: hidden;
+          flex-shrink: 0;
+        }
+        .player-image img { width: 100%; height: 100%; object-fit: cover; }
         .player-content { flex: 1; min-width: 0; }
         .player-source {
           font-size: 0.7rem;
