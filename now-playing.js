@@ -1,4 +1,9 @@
 class NowPlaying extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+
   set hass(hass) {
     this._hass = hass;
     const players = this.getMediaPlayers();
@@ -125,7 +130,7 @@ class NowPlaying extends HTMLElement {
     }
     this._progressElements = [];
 
-    this.innerHTML = `
+    this.shadowRoot.innerHTML = `
       <style>
         :host { display: block; }
         .card {
@@ -294,7 +299,7 @@ class NowPlaying extends HTMLElement {
       </div>
     `;
 
-    this.querySelectorAll('.player').forEach(el => {
+    this.shadowRoot.querySelectorAll('.player').forEach(el => {
       el.addEventListener('click', () => {
         this.dispatchEvent(new CustomEvent('hass-more-info', {
           bubbles: true,
